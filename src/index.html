@@ -51,9 +51,7 @@
   <body>
 	<h1>Scale Sequencer</h1>
 	<p>A step sequencer for any scale. Click tiles and make music.</p>
-	<p class="share-wrap">
-		Share Your Song: <input readonly id="clipboard-input"><button class="clipboard" data-clipboard-target="#clipboard-input"><img class="icon" src="clippy.svg" alt="Copy to clipboard"></button>
-	</p>
+	
 	<div class="select-container">
 		<select id='tonic-select'>
 			<option value=0>C</option>
@@ -101,9 +99,16 @@
 			<span id="muteButton"></span>
 			<a id="clearnotes" class="button" href="javascript:void(0)">Clear Notes</a>
 		</div>
+		
+		<div>
 			<p>Based on a migration of <a href="https://tonematrix.audiotool.com/">ToneMatrix</a> by <a href="https://www.maxlaumeister.com/">Max L</a></p>
 			<p>Additional scales by <a href="https://www.henryfellerhoff.com/">Henry Fellerhoff</a> - <a href="https://github.com/hfellerhoff/ToneMatrixRedux">GitHub</a></p></p>
 		</div>
+		<!-- <div>
+			<p class="share-wrap">
+				Share Your Song: <input readonly id="clipboard-input"><button class="clipboard" data-clipboard-target="#clipboard-input"><img class="icon" src="clippy.svg" alt="Copy to clipboard"></button>
+			</p>
+		</div> -->
 	</div>
 	<script src="all.js"></script>
 	<script>
