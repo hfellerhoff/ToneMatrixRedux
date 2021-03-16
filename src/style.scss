@@ -205,6 +205,25 @@ body:not(.playing) {
   }
 }
 
+// ==== Scale Choice Additions ===
+select {
+  background-color: #222;
+  border: solid #444 1px;
+  border-radius: 3px 0 0 3px;
+  color: #999;
+  font-size: 0.7em;
+  height: 24px;
+  padding: 0 5px;
+  margin-bottom: 1rem;
+}
+
+.select-container {
+  margin-top: 0.5rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .footer {
   margin-top: 0.5rem;
   align-items: center;

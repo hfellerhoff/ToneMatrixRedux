@@ -54,6 +54,44 @@
 	<p class="share-wrap">
 		Share Your Song: <input readonly id="clipboard-input"><button class="clipboard" data-clipboard-target="#clipboard-input"><img class="icon" src="clippy.svg" alt="Copy to clipboard"></button>
 	</p>
+	<div class="select-container">
+		<select id='tonic-select'>
+			<option value=0>C</option>
+			<option value=1>C#/Db</option>
+			<option value=2>D</option>
+			<option value=3>D#/Eb</option>
+			<option value=4>E</option>
+			<option value=5>F</option>
+			<option value=6>F#/Gb</option>
+			<option value=7>G</option>
+			<option value=8>G#/Ab</option>
+			<option value=9>A</option>
+			<option value=10>A#/Bb</option>
+			<option value=11>B</option>
+		</select>
+		<select id='scale-select'>
+			<!-- Diatonic Modes -->
+			<option value='0,2,4,5,7,9,11'>Ionian</option>
+			<option value='0,2,3,5,7,9,10'>Dorian</option>
+			<option value='0,1,3,5,7,8,10'>Phrygian</option>
+			<option value='0,2,4,6,7,9,11'>Lydian</option>
+			<option value='0,2,4,5,7,9,10'>Mixolydian</option>
+			<option value='0,2,3,5,7,8,10'>Aeolian</option>
+			<option value='0,1,3,5,6,8,10'>Locrian</option>
+			<!-- Melodic Minor Modes -->
+			<option value='0,2,3,5,7,9,11'>Melodic minor, Mode 1</option>
+			<option value='0,1,3,5,7,9,10'>Melodic minor, Mode 2</option>
+			<option value='0,2,4,6,8,9,11'>Melodic minor, Mode 3</option>
+			<option value='0,2,4,6,7,9,10'>Melodic minor, Mode 4</option>
+			<option value='0,2,4,5,7,8,10'>Melodic minor, Mode 5</option>
+			<option value='0,2,3,5,6,8,10'>Melodic minor, Mode 6</option>
+			<option value='0,1,3,4,6,8,10'>Melodic minor, Mode 7</option>
+			<!-- Pentatonic Scale -->
+			<option value='0,2,4,7,9'>Pentatonic</option>
+			<option value='0,3,5,7,10'>Minor Pentatonic</option>
+			<option value='0,3,5,6,7,10'>Blues</option>
+		</select>
+	</div>
 	<div class="canvaswrap">
 		<div class="overlay"></div>
 		<a class="play-btn" href="javascript:void(0)"></a>

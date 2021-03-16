@@ -7,24 +7,93 @@ class SynthInstrument {
    * Creates a synth instrument
    * @param {number} gridWidth - The width of the grid, in tiles
    * @param {number} gridHeight - The height of the grid, in tiles
-   * @param {array} scaleNotes - The base notes of the scale, in one octave
    */
-  constructor(gridWidth, gridHeight, options, filterOptions, scaleNotes) {
+  constructor(gridWidth, gridHeight, options, filterOptions) {
     Util.assert(arguments.length === 4);
 
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
 
+    const tonicSelectEl = document.querySelector('#tonic-select');
+    tonicSelectEl.addEventListener('change', () => {
+      this.selectedTonic = parseInt(tonicSelectEl.value, 10);
+
+      this.initializeInstrument(gridWidth, gridHeight, options, filterOptions);
+    });
+
+    const scaleSelectEl = document.querySelector('#scale-select');
+    scaleSelectEl.addEventListener('change', () => {
+      this.selectedScale = scaleSelectEl.value
+        .split(',')
+        .map((v) => parseInt(v, 10));
+
+      this.initializeInstrument(gridWidth, gridHeight, options, filterOptions);
+    });
+
+    this.selectedTonic = parseInt(tonicSelectEl.value, 10);
+    this.selectedScale = scaleSelectEl.value
+      .split(',')
+      .map((v) => parseInt(v, 10));
+
+    this.initializeInstrument(gridWidth, gridHeight, options, filterOptions);
+  }
+
+  initializeInstrument(gridWidth, gridHeight, options, filterOptions) {
     // Construct scale array
 
-    const octave = 3; // base octave
-    const octaveoffset = 4;
+    let octaveOffset;
+    const scaleNotes = this.selectedScale.map((note, i) => {
+      const computedNote = (this.selectedTonic + note) % 12;
+      if (!octaveOffset && Math.floor((this.selectedTonic + note) / 12) > 0) {
+        octaveOffset = i;
+      }
+
+      switch (computedNote) {
+        case 0:
+          return 'C';
+        case 1:
+          return 'C#';
+        case 2:
+          return 'D';
+        case 3:
+          return 'D#';
+        case 4:
+          return 'E';
+        case 5:
+          return 'F';
+        case 6:
+          return 'F#';
+        case 7:
+          return 'G';
+        case 8:
+          return 'G#';
+        case 9:
+          return 'A';
+        case 10:
+          return 'A#';
+        case 11:
+          return 'B';
+        default:
+          return 'C';
+      }
+    });
+
+    if (!octaveOffset) {
+      octaveOffset = 0;
+    }
+
+    // Find the actual offset
+    octaveOffset = scaleNotes.length - octaveOffset;
+
+    const baseOctave = 3; // base octave
     const scale = Array(gridHeight);
     for (let i = 0; i < gridHeight; i += 1) {
-      scale[i] =
-        scaleNotes[i % scaleNotes.length] +
-        (octave + Math.floor((i + octaveoffset) / scaleNotes.length));
+      const note = scaleNotes[i % scaleNotes.length];
+      const octave =
+        baseOctave + Math.floor((i + octaveOffset) / scaleNotes.length);
+      scale[i] = `${note}${octave}`;
     }
+
     this.scale = scale.reverse(); // higher notes at lower y values, near the top
 
     // Pre-render synth

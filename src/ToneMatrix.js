@@ -3,7 +3,8 @@
 /* global Grid */
 /* global Util */
 /** Main class of ToneMatrix Redux, a pentatonic step sequencer */
-class ToneMatrix { // eslint-disable-line no-unused-vars
+class ToneMatrix {
+  // eslint-disable-line no-unused-vars
   /**
    * Creates a new ToneMatrix Redux instance, and attach it to existing DOM elements
    * @param {Element} canvasWrapperEl - The wrapper element that ToneMatrix should inject its
@@ -13,8 +14,13 @@ class ToneMatrix { // eslint-disable-line no-unused-vars
    * @param {Element} clipboardButtonEl - A DOM element that should copy the level code to the
    *    clipboard when clicked
    */
-  constructor(canvasWrapperEl, clearNotesButtonEl, clipboardInputEl,
-    clipboardButtonEl, muteButtonEl) {
+  constructor(
+    canvasWrapperEl,
+    clearNotesButtonEl,
+    clipboardInputEl,
+    clipboardButtonEl,
+    muteButtonEl
+  ) {
     Util.assert(arguments.length === 5);
 
     /**
@@ -58,7 +64,12 @@ class ToneMatrix { // eslint-disable-line no-unused-vars
     // Clipboard input element
 
     this.clipboardInputEl = clipboardInputEl || null;
-    this.originalURL = [window.location.protocol, '//', window.location.host, window.location.pathname].join(''); // Initial page URL without query string
+    this.originalURL = [
+      window.location.protocol,
+      '//',
+      window.location.host,
+      window.location.pathname,
+    ].join(''); // Initial page URL without query string
 
     clearNotesButtonEl.addEventListener('click', () => {
       this.clear();
@@ -87,8 +98,14 @@ class ToneMatrix { // eslint-disable-line no-unused-vars
 
     function canvasClick(x, y) {
       Util.assert(arguments.length === 2);
-      const tile = Util.pixelCoordsToTileCoords(x, y, this.WIDTH, this.HEIGHT,
-        this.c.width, this.c.height);
+      const tile = Util.pixelCoordsToTileCoords(
+        x,
+        y,
+        this.WIDTH,
+        this.HEIGHT,
+        this.c.width,
+        this.c.height
+      );
       if (arming === null) arming = !this.grid.getTileValue(tile.x, tile.y);
       this.grid.setTileValue(tile.x, tile.y, arming);
       // Update URL fragment
@@ -116,12 +133,10 @@ class ToneMatrix { // eslint-disable-line no-unused-vars
       if (e.touches.length === 1) {
         arming = null;
       }
-      Array.from(e.touches).forEach(
-        (touch) => {
-          this.updateCanvasMousePosition(touch);
-          canvasClick.bind(this)(this.mouseX, this.mouseY);
-        },
-      );
+      Array.from(e.touches).forEach((touch) => {
+        this.updateCanvasMousePosition(touch);
+        canvasClick.bind(this)(this.mouseX, this.mouseY);
+      });
     });
     this.c.addEventListener('touchend', (e) => {
       e.preventDefault(); // Prevent emulated click
@@ -129,18 +144,17 @@ class ToneMatrix { // eslint-disable-line no-unused-vars
     });
     this.c.addEventListener('touchmove', (e) => {
       e.preventDefault(); // Prevent emulated click
-      Array.from(e.touches).forEach(
-        (touch) => {
-          this.updateCanvasMousePosition(touch);
-          canvasClick.bind(this)(this.mouseX, this.mouseY);
-        },
-      );
+      Array.from(e.touches).forEach((touch) => {
+        this.updateCanvasMousePosition(touch);
+        canvasClick.bind(this)(this.mouseX, this.mouseY);
+      });
     });
 
     // Secret instrument switcher
 
     window.addEventListener('keydown', (event) => {
-      if (!event.isComposing && !(event.keyCode === 229)) { // not some chinese character weirdness
+      if (!event.isComposing && !(event.keyCode === 229)) {
+        // not some chinese character weirdness
         if (event.keyCode >= 48 && event.keyCode <= 57) {
           this.grid.setCurrentInstrument(event.keyCode - 48); // 0 through 9
         } else if (event.keyCode >= 96 && event.keyCode <= 105) {
@@ -161,7 +175,10 @@ class ToneMatrix { // eslint-disable-line no-unused-vars
       canvasWrapperEl.style.visibility = 'visible';
     });
 
-    if ('ontouchstart' in window || window.location.toString().indexOf('?') >= 0) {
+    if (
+      'ontouchstart' in window ||
+      window.location.toString().indexOf('?') >= 0
+    ) {
       canvasWrapperEl.addEventListener('click', () => {
         Tone.context.resume().then(() => {
           document.body.classList.add('playing');
