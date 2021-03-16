@@ -4,7 +4,8 @@
 /* global Tile */
 /* global Tone */
 /** A 2-D matrix that keeps track of notes and can enable, disable, and play them */
-class Grid { // eslint-disable-line no-unused-vars
+class Grid {
+  // eslint-disable-line no-unused-vars
   /**
    * Creates a new Grid
    * @param {number} width - The width of the grid in tiles
@@ -13,42 +14,58 @@ class Grid { // eslint-disable-line no-unused-vars
    */
   constructor(width, height, canvas) {
     Util.assert(arguments.length === 3);
-    this.data = Array(width * height).fill().map(() => (new Tile()));
+    this.data = Array(width * height)
+      .fill()
+      .map(() => new Tile());
     this.width = width;
     this.height = height;
     this.renderer = new GridRenderer(width, height, canvas);
     this.currentInstrument = 0;
     this.instruments = [];
-    this.instruments.push(new SynthInstrument(width, height, {
-      oscillator: {
-        type: 'sine',
-      },
-      envelope: {
-        attack: 0.005,
-        decay: 0.1,
-        sustain: 0.3,
-        release: 1,
-      },
-    },
-    {
-      frequency: 1100,
-      rolloff: -12,
-    }));
-    this.instruments.push(new SynthInstrument(width, height, {
-      oscillator: {
-        type: 'sawtooth',
-      },
-      envelope: {
-        attack: 0.005,
-        decay: 0.1,
-        sustain: 0.3,
-        release: 2,
-      },
-    },
-    {
-      frequency: 1100,
-      rolloff: -12,
-    }));
+    this.instruments.push(
+      new SynthInstrument(
+        width,
+        height,
+        {
+          oscillator: {
+            type: 'sine',
+          },
+          envelope: {
+            attack: 0.005,
+            decay: 0.1,
+            sustain: 0.3,
+            release: 1,
+          },
+        },
+        {
+          frequency: 1100,
+          rolloff: -12,
+        },
+        ['C#', 'D', 'E', 'F', 'G', 'Ab', 'Bb', 'B'] // ['B#', 'D', 'F', 'G', 'A'];
+      )
+    );
+    this.instruments.push(
+      new SynthInstrument(
+        width,
+        height,
+        {
+          oscillator: {
+            type: 'sawtooth',
+          },
+          envelope: {
+            attack: 0.005,
+            decay: 0.1,
+            sustain: 0.3,
+            release: 2,
+          },
+        },
+        {
+          frequency: 1100,
+          rolloff: -12,
+        },
+        ['C#', 'D', 'E', 'F', 'G', 'Ab', 'Bb', 'B'] // ['B#', 'D', 'F', 'G', 'A'];
+      )
+    );
   }
 
   /**
@@ -69,7 +86,9 @@ class Grid { // eslint-disable-line no-unused-vars
    */
   getTileValue(x, y) {
     Util.assert(arguments.length === 2);
-    return this.data[Util.coordToIndex(x, y, this.height)].hasNote(this.currentInstrument);
+    return this.data[Util.coordToIndex(x, y, this.height)].hasNote(
+      this.currentInstrument
+    );
   }
 
   /**
@@ -84,16 +103,21 @@ class Grid { // eslint-disable-line no-unused-vars
       if (this.getTileValue(x, y)) return;
       // Turning on, schedule note
 
-      this.data[Util.coordToIndex(x, y, this.height)].addNote(this.currentInstrument,
-        this.instruments[this.currentInstrument]
-          .scheduleNote(x, y));
+      this.data[Util.coordToIndex(x, y, this.height)].addNote(
+        this.currentInstrument,
+        this.instruments[this.currentInstrument].scheduleNote(x, y)
+      );
     } else {
       if (!this.getTileValue(x, y)) return;
       // Turning off, unschedule note
-      this.instruments[this.currentInstrument]
-        .unscheduleNote(this.data[Util.coordToIndex(x, y, this.height)]
-          .getNote(this.currentInstrument));
-      this.data[Util.coordToIndex(x, y, this.height)].removeNote(this.currentInstrument);
+      this.instruments[this.currentInstrument].unscheduleNote(
+        this.data[Util.coordToIndex(x, y, this.height)].getNote(
+          this.currentInstrument
+        )
+      );
+      this.data[Util.coordToIndex(x, y, this.height)].removeNote(
+        this.currentInstrument
+      );
     }
   }
 

@@ -1,13 +1,15 @@
 /* global Tone */
 /* global Util */
 /** Allows the audio playback of notes */
-class SynthInstrument { // eslint-disable-line no-unused-vars
+class SynthInstrument {
+  // eslint-disable-line no-unused-vars
   /**
    * Creates a synth instrument
    * @param {number} gridWidth - The width of the grid, in tiles
    * @param {number} gridHeight - The height of the grid, in tiles
+   * @param {array} scaleNotes - The base notes of the scale, in one octave
    */
-  constructor(gridWidth, gridHeight, options, filterOptions) {
+  constructor(gridWidth, gridHeight, options, filterOptions, scaleNotes) {
     Util.assert(arguments.length === 4);
 
     this.gridWidth = gridWidth;
@@ -15,13 +17,13 @@ class SynthInstrument { // eslint-disable-line no-unused-vars
 
     // Construct scale array
 
-    const pentatonic = ['B#', 'D', 'F', 'G', 'A'];
     const octave = 3; // base octave
     const octaveoffset = 4;
     const scale = Array(gridHeight);
     for (let i = 0; i < gridHeight; i += 1) {
-      scale[i] = pentatonic[i % pentatonic.length]
-        + (octave + Math.floor((i + octaveoffset) / pentatonic.length));
+      scale[i] =
+        scaleNotes[i % scaleNotes.length] +
+        (octave + Math.floor((i + octaveoffset) / scaleNotes.length));
     }
     this.scale = scale.reverse(); // higher notes at lower y values, near the top
 
@@ -46,7 +48,11 @@ class SynthInstrument { // eslint-disable-line no-unused-vars
       const synth = new Tone.Synth(options).connect(filter);
 
       this.scale.forEach((el, idx) => {
-        synth.triggerAttackRelease(el, Tone.Time('1m') / this.gridWidth, idx * self.noteOffset);
+        synth.triggerAttackRelease(
+          el,
+          Tone.Time('1m') / this.gridWidth,
+          idx * self.noteOffset
+        );
       });
     }, this.noteOffset * this.scale.length).then((buffer) => {
       for (let i = 0; i < this.scale.length * self.numVoices; i += 1) {
@@ -73,12 +79,16 @@ class SynthInstrument { // eslint-disable-line no-unused-vars
       const highVolume = -10; // When one note is playing
       const lowVolume = -20; // When all notes are playing (lower volume to prevent peaking)
 
-      const volume = ((this.gridHeight - this.polyphony[gridX]) / this.gridHeight)
-        * (highVolume - lowVolume) + lowVolume;
+      const volume =
+        ((this.gridHeight - this.polyphony[gridX]) / this.gridHeight) *
+          (highVolume - lowVolume) +
+        lowVolume;
       try {
         this.players[this.currentPlayer].volume.setValueAtTime(volume, time);
         this.players[this.currentPlayer].start(
-          time, gridY * this.noteOffset, this.noteOffset,
+          time,
+          gridY * this.noteOffset,
+          this.noteOffset
         );
         this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
       } catch (e) {
@@ -95,7 +105,8 @@ class SynthInstrument { // eslint-disable-line no-unused-vars
    * Unschedules a note so that it will no longer play
    * @param {noteId} id - The id of the note to unschedule
    */
-  unscheduleNote(id) { // eslint-disable-line class-methods-use-this
+  unscheduleNote(id) {
+    // eslint-disable-line class-methods-use-this
     Util.assert(arguments.length === 1);
     const { x } = this.notes[id];
     delete this.notes[id];
@@ -109,9 +120,11 @@ class SynthInstrument { // eslint-disable-line no-unused-vars
    * @returns {number} - The x position
    */
   getPlayheadX() {
-    const adjustedSeconds = Tone.Transport.seconds
-      % (Tone.Transport.loopEnd - Tone.Transport.loopStart);
-    const adjustedProgress = adjustedSeconds / (Tone.Transport.loopEnd - Tone.Transport.loopStart);
+    const adjustedSeconds =
+      Tone.Transport.seconds %
+      (Tone.Transport.loopEnd - Tone.Transport.loopStart);
+    const adjustedProgress =
+      adjustedSeconds / (Tone.Transport.loopEnd - Tone.Transport.loopStart);
     return Math.floor(adjustedProgress * this.gridWidth);
   }
 }

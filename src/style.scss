@@ -80,7 +80,7 @@ canvas,
   margin-right: 15px;
   width: 40px;
   height: 40px;
-  background-image: url("volume-up.svg");
+  background-image: url('volume-up.svg');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -90,7 +90,7 @@ canvas,
 }
 
 #muteButton.muted {
-  background-image: url("volume-mute.svg");
+  background-image: url('volume-mute.svg');
 }
 
 button,
@@ -116,7 +116,7 @@ button,
 }
 
 .share-wrap {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 
 .share-wrap > * {
@@ -128,7 +128,7 @@ button,
 body:not(.playing) {
   canvas {
     filter: blur(5px);
-    opacity: .3;
+    opacity: 0.3;
     overflow: hidden;
     pointer-events: none;
   }
@@ -138,7 +138,10 @@ body:not(.playing) {
   }
 
   .play-btn {
-    background: radial-gradient(rgba(255, 0, 128, 0.8) 60%, rgba(255, 255, 255, 1) 62%);
+    background: radial-gradient(
+      rgba(255, 0, 128, 0.8) 60%,
+      rgba(255, 255, 255, 1) 62%
+    );
     border-radius: 50%;
     box-shadow: 0 0 25px 3px rgba(255, 0, 128, 0.8);
     display: block;
@@ -174,7 +177,7 @@ body:not(.playing) {
       animation-iteration-count: infinite;
       animation-timing-function: steps;
       background: rgba(198, 16, 0, 0);
-      border: 5px solid rgba(255, 255, 255, .75);
+      border: 5px solid rgba(255, 255, 255, 0.75);
       border-radius: 50%;
       content: '';
       height: 150%;
@@ -189,15 +192,28 @@ body:not(.playing) {
 
 @keyframes pulsate1 {
   0% {
-    box-shadow: inset 0 0 25px 3px rgba(255, 255, 255, 0.75), 0 0 25px 10px rgba(255, 255, 255, 0.75);
+    box-shadow: inset 0 0 25px 3px rgba(255, 255, 255, 0.75),
+      0 0 25px 10px rgba(255, 255, 255, 0.75);
     opacity: 1;
-    transform: scale(.6);
+    transform: scale(0.6);
   }
 
   100% {
     box-shadow: none;
     opacity: 0;
     transform: scale(1);
-
   }
+}
+
+.footer {
+  margin-top: 0.5rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.footer p {
+  margin-top: 0.75rem;
+  margin-bottom: 0rem;
 }

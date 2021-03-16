@@ -39,14 +39,14 @@
 	</style>
 	<link rel="stylesheet" href="style.css">
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-24440376-11"></script>
+	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-24440376-11"></script>
 	<script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
 	gtag('js', new Date());
 
 	gtag('config', 'UA-24440376-11');
-	</script>
+	</script> -->
   </head>
   <body>
 	<h1>ToneMatrix Redux</h1>
@@ -58,7 +58,15 @@
 		<div class="overlay"></div>
 		<a class="play-btn" href="javascript:void(0)"></a>
 	</div>
-	<p><span id="muteButton"></span><a id="clearnotes" class="button" href="javascript:void(0)">Clear Notes</a> Based on <a href="https://tonematrix.audiotool.com/">ToneMatrix</a> - By <a href="https://www.maxlaumeister.com/">Max L</a> - <a href="https://github.com/MaxLaumeister/ToneMatrixRedux">GitHub</a></p>
+	<div class="footer">
+		<div >
+			<span id="muteButton"></span>
+			<a id="clearnotes" class="button" href="javascript:void(0)">Clear Notes</a>
+		</div>
+			<p>Based on a migration of <a href="https://tonematrix.audiotool.com/">ToneMatrix</a> by <a href="https://www.maxlaumeister.com/">Max L</a></p>
+			<p>Additional scales by <a href="https://www.henryfellerhoff.com/">Henry Fellerhoff</a> - <a href="https://github.com/hfellerhoff/ToneMatrixRedux">GitHub</a></p></p>
+		</div>
+	</div>
 	<script src="all.js"></script>
 	<script>
 		const toneMatrixInstance = new ToneMatrix(document.querySelector(".canvaswrap"), document.querySelector("#clearnotes"), document.querySelector("#clipboard-input"), document.querySelector(".clipboard"), document.querySelector("#muteButton"));
