@@ -1,12 +1,14 @@
-# ToneMatrix Redux
+# Scale Sequencer
 
 Click on the boxes and make music! This project is an HTML5 revival of [ToneMatrix by Audiotool](https://tonematrix.audiotool.com/), which was originally written in Flash.
 
-<a href="https://www.maxlaumeister.com/tonematrix/"><img alt="ToneMatrix Redux Screenshot" src="/etc/screenshot.png?raw=true" height="300" title="Click To Play!"></a>
+> This project is a fork of [this project by Max Laumeister](https://github.com/MaxLaumeister/ToneMatrixRedux). I am keeping it separate for now, as the original project seems focused on the pentatonic scale and offering very niche scales may not be in the spirit of the original project.
+
+<a href="https://sequencer.henryfellerhoff.com"><img alt="Scale Sequencer Screenshot" src="/etc/screenshot.png?raw=true" height="300" title="Click To Play!"></a>
 
 ## How to Play
 
-Visit [https://www.maxlaumeister.com/tonematrix/](https://www.maxlaumeister.com/tonematrix/)
+Visit [https://sequencer.henryfellerhoff.com](https://sequencer.henryfellerhoff.com)
 
 ## How To Build
 
@@ -37,7 +39,7 @@ In any case, the compiled application will be in the `dist` folder.
 
 ## TODO
 
-See [Issues](https://github.com/MaxLaumeister/ToneMatrixRedux/issues).
+See [Issues](https://github.com/hfellerhoff/scoresequencer/issues).
 
 ## Special Thanks
 
