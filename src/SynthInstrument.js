@@ -63,9 +63,6 @@ class SynthInstrument {
 
   initializeInstrument(gridWidth, gridHeight, options, filterOptions) {
     // Construct scale array
-
-    console.log(this.selectedTonic, this.selectedScale);
-
     let octaveOffset;
     const scaleNotes = this.selectedScale.map((note, i) => {
       const computedNote = (this.selectedTonic + note) % 12;
