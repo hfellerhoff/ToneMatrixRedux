@@ -9,7 +9,7 @@ html {
 html,
 body {
   background: #000000;
-  font-family: Arial, sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
   margin: 0;
   min-height: 100%;
   width: 100%;
@@ -37,8 +37,16 @@ h1 {
 }
 
 #clearnotes {
-  margin-right: 10px;
-  padding: 7px;
+  padding: 0.5rem 0.75rem;
+  background: #222222;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #444444;
+  color: #a8a8a8;
+}
+
+#clearnotes:hover {
+  background: #333333;
 }
 
 canvas {
@@ -132,6 +140,7 @@ body:not(.playing) {
     opacity: 0.3;
     overflow: hidden;
     pointer-events: none;
+    background: transparent;
   }
 
   .canvaswrap {
@@ -210,12 +219,16 @@ body:not(.playing) {
 select {
   background-color: #222;
   border: solid #444 1px;
-  border-radius: 3px 0 0 3px;
+  border-radius: 0px;
   color: #999;
   font-size: 0.7em;
   height: 24px;
   padding: 0 5px;
   margin-bottom: 1rem;
+
+  -moz-appearance: none; /* Firefox */
+  -webkit-appearance: none; /* Safari and Chrome */
+  appearance: none;
 }
 
 .select-container {
