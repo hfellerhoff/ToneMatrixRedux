@@ -56,7 +56,7 @@ class ToneMatrix {
     this.c.height = rect.height * dpr;
     this.c.width = rect.height * (this.WIDTH / this.HEIGHT) * dpr;
 
-    this.grid = new Grid(this.WIDTH, this.HEIGHT, this.c);
+    this.grid = new Grid(this.WIDTH, this.HEIGHT, this.c, this);
 
     this.mouseX = -1;
     this.mouseY = -1;
@@ -115,19 +115,23 @@ class ToneMatrix {
       // Make sure audio context is running
       Tone.context.resume();
     }
+
     this.c.addEventListener('mousemove', (e) => {
       this.updateCanvasMousePosition(e);
       if (e.buttons !== 1) return; // Only if left button is held
       canvasClick.bind(this)(this.mouseX, this.mouseY);
     });
+
     this.c.addEventListener('mouseleave', () => {
       this.resetCanvasMousePosition();
     });
+
     this.c.addEventListener('mousedown', (e) => {
       this.updateCanvasMousePosition(e);
       arming = null;
       canvasClick.bind(this)(this.mouseX, this.mouseY);
     });
+
     this.c.addEventListener('touchstart', (e) => {
       e.preventDefault(); // Prevent emulated click
       if (e.touches.length === 1) {
@@ -138,10 +142,12 @@ class ToneMatrix {
         canvasClick.bind(this)(this.mouseX, this.mouseY);
       });
     });
+
     this.c.addEventListener('touchend', (e) => {
       e.preventDefault(); // Prevent emulated click
       this.resetCanvasMousePosition();
     });
+
     this.c.addEventListener('touchmove', (e) => {
       e.preventDefault(); // Prevent emulated click
       Array.from(e.touches).forEach((touch) => {
@@ -151,7 +157,6 @@ class ToneMatrix {
     });
 
     // Secret instrument switcher
-
     window.addEventListener('keydown', (event) => {
       if (!event.isComposing && !(event.keyCode === 229)) {
         // not some chinese character weirdness
@@ -192,8 +197,8 @@ class ToneMatrix {
     }
 
     // Load tune from search string, then remove search string
-
     const urlParams = new URLSearchParams(window.location.search);
+
     const data = urlParams.get('d');
     if (data) {
       this.grid.fromBase64(data);
@@ -204,7 +209,6 @@ class ToneMatrix {
     }
 
     // Kick off game loop
-
     function updateContinuous() {
       this.update();
       requestAnimationFrame(updateContinuous.bind(this));
@@ -273,10 +277,38 @@ class ToneMatrix {
    * @param {string} base64URLEncodedData - Base64, URL-encoded level savestate
    */
   setSharingURL(base64URLEncodedData) {
-    Util.assert(arguments.length === 1);
-    Util.assert(base64URLEncodedData);
-    const params = new URLSearchParams({ v: '1', d: base64URLEncodedData });
-    this.clipboardInputEl.value = `${this.originalURL}?${params}`;
+    const tonicSelectEl = document.querySelector('#tonic-select');
+    const scaleSelectEl = document.querySelector('#scale-select');
+
+    if (base64URLEncodedData) {
+      const params = new URLSearchParams({
+        v: '1',
+        d: base64URLEncodedData,
+        tonic: tonicSelectEl.value,
+        scale: scaleSelectEl.value,
+      });
+      this.clipboardInputEl.value = `${this.originalURL}?${params}`;
+    } else {
+      const urlParams = new URLSearchParams(this.clipboardInputEl.value);
+      const d = urlParams.get('d');
+
+      if (d) {
+        const params = new URLSearchParams({
+          v: '1',
+          d,
+          tonic: tonicSelectEl.value,
+          scale: scaleSelectEl.value,
+        });
+        this.clipboardInputEl.value = `${this.originalURL}?${params}`;
+      } else {
+        const params = new URLSearchParams({
+          v: '1',
+          tonic: tonicSelectEl.value,
+          scale: scaleSelectEl.value,
+        });
+        this.clipboardInputEl.value = `${this.originalURL}?${params}`;
+      }
+    }
   }
 
   /**

@@ -11,8 +11,9 @@ class Grid {
    * @param {number} width - The width of the grid in tiles
    * @param {number} height  - The height of the grid in tiles
    * @param {Canvas} canvas - The canvas DOM element that the grid should draw to
+   * @param {ToneMatrix} matrix - The ToneMatrix object
    */
-  constructor(width, height, canvas) {
+  constructor(width, height, canvas, matrix) {
     Util.assert(arguments.length === 3);
     this.data = Array(width * height)
       .fill()
@@ -41,7 +42,7 @@ class Grid {
           frequency: 1100,
           rolloff: -12,
         },
-        ['C#', 'D', 'E', 'F', 'G', 'Ab', 'Bb', 'B'] // ['B#', 'D', 'F', 'G', 'A'];
+        matrix
       )
     );
     this.instruments.push(
@@ -63,7 +64,7 @@ class Grid {
           frequency: 1100,
           rolloff: -12,
         },
-        ['C#', 'D', 'E', 'F', 'G', 'Ab', 'Bb', 'B'] // ['B#', 'D', 'F', 'G', 'A'];
+        matrix
       )
     );
   }

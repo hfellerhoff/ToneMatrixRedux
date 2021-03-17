@@ -1,5 +1,6 @@
 /** A static class that provides pure functions */
-class Util { // eslint-disable-line no-unused-vars
+class Util {
+  // eslint-disable-line no-unused-vars
   /**
    * Converts coordinates in "pixel space" to coordinates in "tile space".
    * In essence, if you pass in an (x, y) position on the canvas,
@@ -13,17 +14,24 @@ class Util { // eslint-disable-line no-unused-vars
    * @param {number} canvasHeight - The height of the pixel space,
    *  typically the height of the canvas
    */
-  static pixelCoordsToTileCoords(x, y, gridWidth, gridHeight, canvasWidth, canvasHeight) {
+  static pixelCoordsToTileCoords(
+    x,
+    y,
+    gridWidth,
+    gridHeight,
+    canvasWidth,
+    canvasHeight
+  ) {
     Util.assert(arguments.length === 6);
     const dx = canvasWidth / gridWidth;
     const dy = canvasHeight / gridHeight;
     const xCoord = Math.floor(x / dx);
     const yCoord = Math.floor(y / dy);
     if (
-      xCoord >= gridWidth
-            || yCoord >= gridWidth
-            || xCoord < 0
-            || yCoord < 0
+      xCoord >= gridWidth ||
+      yCoord >= gridWidth ||
+      xCoord < 0 ||
+      yCoord < 0
     ) {
       return false;
     }
@@ -66,7 +74,16 @@ class Util { // eslint-disable-line no-unused-vars
    * @param {boolean} fill - Whether the rectangle should be filled
    * @param {boolean} stroke - Whether the rectangle should be stroked
    */
-  static drawRoundedRectangle(ctx, x, y, width, height, radius = 5, fill = false, stroke = true) {
+  static drawRoundedRectangle(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius = 5,
+    fill = false,
+    stroke = true
+  ) {
     Util.assert(arguments.length >= 5 && arguments.length <= 8);
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -115,6 +132,6 @@ Util.devicePixelRatio = 1;
   };
   updatePixelRatio();
   matchMedia(mqString).addEventListener('change', updatePixelRatio);
-}());
+})();
 
 Util.DEBUG = false;

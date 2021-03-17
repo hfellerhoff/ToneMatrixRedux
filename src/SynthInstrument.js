@@ -7,8 +7,9 @@ class SynthInstrument {
    * Creates a synth instrument
    * @param {number} gridWidth - The width of the grid, in tiles
    * @param {number} gridHeight - The height of the grid, in tiles
+   * @param {ToneMatrix} matrix - The ToneMatrix object
    */
-  constructor(gridWidth, gridHeight, options, filterOptions) {
+  constructor(gridWidth, gridHeight, options, filterOptions, matrix) {
     Util.assert(arguments.length === 4);
 
     this.gridWidth = gridWidth;
@@ -19,6 +20,8 @@ class SynthInstrument {
       this.selectedTonic = parseInt(tonicSelectEl.value, 10);
 
       this.initializeInstrument(gridWidth, gridHeight, options, filterOptions);
+
+      matrix.setSharingURL();
     });
 
     const scaleSelectEl = document.querySelector('#scale-select');
@@ -28,18 +31,40 @@ class SynthInstrument {
         .map((v) => parseInt(v, 10));
 
       this.initializeInstrument(gridWidth, gridHeight, options, filterOptions);
+
+      matrix.setSharingURL();
     });
 
-    this.selectedTonic = parseInt(tonicSelectEl.value, 10);
-    this.selectedScale = scaleSelectEl.value
-      .split(',')
-      .map((v) => parseInt(v, 10));
+    // Load tune from search string, then remove search string
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const tonicParam = urlParams.get('tonic');
+    if (tonicParam) {
+      const selectedTonic = parseInt(tonicParam, 10);
+      tonicSelectEl.value = selectedTonic;
+      this.selectedTonic = selectedTonic;
+    } else {
+      this.selectedTonic = parseInt(tonicSelectEl.value, 10);
+    }
+
+    const scaleParam = urlParams.get('scale');
+    if (scaleParam) {
+      const selectedScale = scaleParam.split(',').map((v) => parseInt(v, 10));
+      scaleSelectEl.value = selectedScale;
+      this.selectedScale = selectedScale;
+    } else {
+      this.selectedScale = scaleSelectEl.value
+        .split(',')
+        .map((v) => parseInt(v, 10));
+    }
 
     this.initializeInstrument(gridWidth, gridHeight, options, filterOptions);
   }
 
   initializeInstrument(gridWidth, gridHeight, options, filterOptions) {
     // Construct scale array
+
+    console.log(this.selectedTonic, this.selectedScale);
 
     let octaveOffset;
     const scaleNotes = this.selectedScale.map((note, i) => {
